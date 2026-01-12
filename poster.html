@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEAM Charity Raffle 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- html2canvas library for PNG export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            /* CEAM Brand Colors - Matching logo blue theme */
+            --primary: #1A4B8C;           /* Main CEAM blue */
+            --primary-dark: #0D3A6E;      /* Darker blue */
+            --primary-light: #2E6BB8;     /* Lighter blue */
+            --ring-blue: #3B7DC9;         /* Blue ring from logo */
+            --gold: #D4A84B;              /* Hornbill gold accent */
+            --gold-light: #E8C97D;        /* Light gold */
+            --deep-blue: #0a1628;         /* Background dark */
+            --navy: #132744;              /* Navy blue */
+            --accent-red: #C41E3A;        /* Red accent */
+            --white: #FFFFFF;
+            --cream: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            /* IMPROVED: Gradient background matching CEAM blue brand */
+            background: linear-gradient(135deg, #0a1628 0%, #132744 50%, #1a4b8c 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .poster {
+            width: 100%;
+            max-width: 600px; /* Base width - exports scale up to fill Facebook */
+            /* IMPROVED: Blue-dominant gradient with subtle navy depth */
+            background: linear-gradient(165deg, 
+                var(--primary) 0%, 
+                var(--navy) 30%, 
+                var(--deep-blue) 70%, 
+                #0D1E38 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 60px rgba(26, 75, 140, 0.3),
+                0 0 100px rgba(212, 168, 75, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .poster::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* IMPROVED: Blue and gold glow effects */
+            background: 
+                radial-gradient(ellipse at 20% 0%, rgba(59, 125, 201, 0.2) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 0%, rgba(212, 168, 75, 0.15) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 100%, rgba(26, 75, 140, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .decorative-top {
+            height: 8px;
+            /* IMPROVED: Blue to gold gradient matching CEAM brand */
+            background: linear-gradient(90deg, 
+                var(--primary) 0%, 
+                var(--ring-blue) 25%, 
+                var(--gold) 50%, 
+                var(--ring-blue) 75%, 
+                var(--primary) 100%);
+            position: relative;
+        }
+
+        .header {
+            padding: 30px 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .charity-badge {
+            display: inline-block;
+            /* IMPROVED: Blue gradient badge matching CEAM brand */
+            background: linear-gradient(135deg, var(--primary) 0%, var(--ring-blue) 100%);
+            color: var(--white);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(26, 75, 140, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .logo-area {
+            margin-bottom: 10px;
+        }
+
+        .logo-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 72px;
+            /* FIXED: Clean silver/white text - removed orange gradient background */
+            color: #E8EDF5; /* Bright silver color */
+            letter-spacing: 8px;
+            text-shadow: 
+                0 0 30px rgba(255, 255, 255, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.5);
+            line-height: 1;
+            /* No background gradient - clean text */
+        }
+
+        .logo-subtitle {
+            font-size: 10px;
+            color: var(--gold-light);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .title-section {
+            padding: 0 30px 25px;
+            text-align: center;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            color: var(--white);
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .main-title span {
+            color: var(--gold);
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+        }
+
+        .grand-prize {
+            margin: 0 20px 25px;
+            /* IMPROVED: Blue-gold gradient for premium feel */
+            background: linear-gradient(135deg, 
+                rgba(26, 75, 140, 0.3) 0%, 
+                rgba(59, 125, 201, 0.15) 50%,
+                rgba(212, 168, 75, 0.1) 100%);
+            border: 2px solid;
+            border-image: linear-gradient(135deg, var(--ring-blue), var(--gold), var(--ring-blue)) 1;
+            border-radius: 16px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grand-prize::before {
+            content: '🏆';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--gold) 0%, #c49a3d 100%);
+            color: var(--deep-blue);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(212, 168, 75, 0.4);
+        }
+
+        .grand-prize-label {
+            font-size: 11px;
+            color: var(--gold);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .grand-prize-amount {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 68px;
+            color: var(--white);
+            line-height: 1;
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+        }
+
+        .grand-prize-amount span {
+            font-size: 36px;
+            color: var(--gold);
+        }
+
+        .grand-prize-note {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 5px;
+        }
+
+        .prizes-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 0 20px 20px;
+        }
+
+        .prize-card {
+            /* IMPROVED: Blue-tinted glass effect */
+            background: linear-gradient(145deg, 
+                rgba(59, 125, 201, 0.15), 
+                rgba(26, 75, 140, 0.08));
+            border: 1px solid rgba(59, 125, 201, 0.3);
+            border-radius: 12px;
+            padding: 18px 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .prize-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--gold);
+            box-shadow: 0 10px 30px rgba(26, 75, 140, 0.3);
+            background: linear-gradient(145deg, 
+                rgba(212, 168, 75, 0.15), 
+                rgba(59, 125, 201, 0.1));
+        }
+
+        .prize-rank {
+            font-size: 10px;
+            /* IMPROVED: Blue accent for ranks */
+            color: var(--ring-blue);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .prize-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .prize-name {
+            font-size: 13px;
+            color: var(--white);
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .prize-value {
+            font-size: 11px;
+            color: var(--gold-light);
+            margin-top: 4px;
+        }
+
+        .consolation-section {
+            /* IMPROVED: Blue glass effect */
+            background: linear-gradient(135deg, 
+                rgba(26, 75, 140, 0.15) 0%, 
+                rgba(59, 125, 201, 0.08) 100%);
+            padding: 18px 20px;
+            margin: 0 20px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(59, 125, 201, 0.2);
+        }
+
+        .consolation-title {
+            font-size: 11px;
+            /* IMPROVED: Gold accent for title */
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .consolation-items {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .consolation-item {
+            text-align: center;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .consolation-item span {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .ticket-section {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .ticket-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .ticket-price {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 52px;
+            color: var(--white);
+        }
+
+        .ticket-price span {
+            font-size: 28px;
+            color: var(--gold);
+        }
+
+        .ticket-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .ticket-option {
+            /* IMPROVED: Blue primary button */
+            background: linear-gradient(135deg, var(--primary) 0%, var(--ring-blue) 100%);
+            color: var(--white);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(26, 75, 140, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .ticket-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 75, 140, 0.5);
+        }
+
+        .ticket-option.secondary {
+            /* IMPROVED: Gold outline button */
+            background: linear-gradient(135deg, var(--gold) 0%, #c49a3d 100%);
+            border: none;
+            color: var(--deep-blue);
+            box-shadow: 0 4px 15px rgba(212, 168, 75, 0.3);
+        }
+
+        .ticket-option.secondary:hover {
+            box-shadow: 0 6px 20px rgba(212, 168, 75, 0.5);
+        }
+
+        .bundle-promo {
+            /* IMPROVED: Gold highlight for promo */
+            background: linear-gradient(135deg, rgba(212, 168, 75, 0.2), rgba(212, 168, 75, 0.05));
+            border: 1px solid rgba(212, 168, 75, 0.4);
+            border-radius: 10px;
+            padding: 12px 20px;
+            margin: 15px 20px 0;
+            text-align: center;
+        }
+
+        .bundle-text {
+            font-size: 12px;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .bundle-text span {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .donate-section {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), transparent);
+            margin: 20px;
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px dashed rgba(212, 175, 55, 0.4);
+            text-align: center;
+        }
+
+        .donate-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .donate-title {
+            font-size: 13px;
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .donate-text {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        .cause-section {
+            /* IMPROVED: Blue gradient section */
+            background: linear-gradient(180deg, 
+                rgba(26, 75, 140, 0.2) 0%, 
+                rgba(26, 75, 140, 0.1) 100%);
+            padding: 25px;
+            text-align: center;
+            border-top: 1px solid rgba(59, 125, 201, 0.2);
+            border-bottom: 1px solid rgba(59, 125, 201, 0.2);
+        }
+
+        .cause-title {
+            font-size: 11px;
+            /* IMPROVED: Blue accent */
+            color: var(--ring-blue);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .cause-items {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .cause-item {
+            text-align: center;
+        }
+
+        .cause-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .cause-name {
+            font-size: 11px;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .cause-desc {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 2px;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .live-draw {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 20px;
+            border-radius: 50px;
+            margin-bottom: 12px;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #FF4444;
+            border-radius: 50%;
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .live-text {
+            font-size: 11px;
+            color: var(--white);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .contact-info {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.6;
+        }
+
+        /* ADDED: Total prize pool banner */
+        .total-pool {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.2));
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--gold-light);
+            letter-spacing: 0.5px;
+        }
+
+        .total-pool strong {
+            color: var(--gold);
+            font-size: 15px;
+        }
+
+        /* ADDED: How to buy section */
+        .how-to-buy {
+            background: linear-gradient(135deg, rgba(26, 75, 140, 0.3), rgba(26, 75, 140, 0.1));
+            margin: 0 20px 20px;
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(59, 125, 201, 0.3);
+        }
+
+        .how-to-buy-title {
+            font-size: 12px;
+            color: #60a5fa;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .how-to-buy-steps {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .buy-step {
+            text-align: center;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .buy-step-icon {
+            font-size: 24px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .buy-step-text {
+            font-weight: 600;
+            color: white;
+        }
+
+        /* ADDED: Terms section - improved visibility */
+        .terms-section {
+            padding: 15px 25px;
+            text-align: center;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.2) 100%);
+            line-height: 1.6;
+        }
+
+        .terms-section strong {
+            color: var(--gold-light);
+        }
+
+        /* ADDED: Contact links styling */
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--gold);
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 8px 16px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .contact-icon {
+            font-size: 14px;
+        }
+
+        /* Header logo image */
+        .logo-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--gold);
+            margin-bottom: 10px;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .decorative-bottom {
+            height: 6px;
+            /* IMPROVED: Matching top border gradient */
+            background: linear-gradient(90deg, 
+                var(--primary) 0%, 
+                var(--ring-blue) 25%, 
+                var(--gold) 50%, 
+                var(--ring-blue) 75%, 
+                var(--primary) 100%);
+        }
+
+        @media (max-width: 480px) {
+            .poster {
+                border-radius: 16px;
+            }
+            
+            .logo-text {
+                font-size: 56px;
+            }
+            
+            .main-title {
+                font-size: 30px;
+            }
+            
+            .grand-prize-amount {
+                font-size: 52px;
+            }
+            
+            .prizes-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            
+            .ticket-options {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cause-items {
+                gap: 20px;
+            }
+        }
+
+        /* ========== EXPORT CONTROLS ========== */
+        .export-controls {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1000;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            max-width: 450px;
+            justify-content: flex-end;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--ring-blue) 100%);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(26, 75, 140, 0.4);
+            white-space: nowrap;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 75, 140, 0.5);
+        }
+
+        .export-btn:active {
+            transform: translateY(0);
+        }
+
+        .export-btn.loading {
+            opacity: 0.7;
+            cursor: wait;
+        }
+
+        .export-btn .icon {
+            font-size: 16px;
+        }
+
+        /* Hide export controls when printing */
+        @media print {
+            .export-controls {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ADDED: Export Controls Panel -->
+    <div class="export-controls">
+        <button class="export-btn" onclick="exportForFacebookSquare()" id="exportFbSqBtn" style="background: linear-gradient(135deg, #1877F2 0%, #0d65d9 100%);">
+            <span class="icon">📘</span>
+            <span>FB Full Poster (1080w)</span>
+        </button>
+        <button class="export-btn" onclick="exportForFacebook()" id="exportFbBtn" style="background: linear-gradient(135deg, #1877F2 0%, #0d65d9 100%);">
+            <span class="icon">📐</span>
+            <span>FB 4:5 Fit (1080×1350)</span>
+        </button>
+        <button class="export-btn" onclick="exportAsHighRes()" id="exportHiResBtn" style="background: linear-gradient(135deg, #D4A84B 0%, #c49a3d 100%); color: #0a1628;">
+            <span class="icon">🖼️</span>
+            <span>Print (4x)</span>
+        </button>
+    </div>
+
+    <div class="poster" id="poster">
+        <div class="decorative-top"></div>
+        
+        <div class="header">
+            <div class="charity-badge">✦ Charity Fundraiser ✦</div>
+            <div class="logo-area">
+                <!-- ADDED: Logo image -->
+                <img src="CEAM LOGO.png" alt="CEAM Logo" class="logo-image">
+                <div class="logo-text">CEAM</div>
+                <div class="logo-subtitle">K'Cho Ethnic Association Malaysia</div>
+            </div>
+        </div>
+
+        <div class="title-section">
+            <!-- UPDATED: Year to 2026 -->
+            <h1 class="main-title"><span>Kumthi</span> Charity Raffle 2026</h1>
+            <p class="subtitle">Your Chance to Win Big & Make a Difference</p>
+        </div>
+
+        <!-- ADDED: Total prize pool badge -->
+        <div class="total-pool">
+            🏆 Total Prizes Worth <strong>RM 18,000+</strong> • Only 6,000 Tickets Available!
+        </div>
+
+        <div class="grand-prize">
+            <div class="grand-prize-label">★ Grand Prize ★</div>
+            <div class="grand-prize-amount"><span>RM</span> 7,000</div>
+            <div class="grand-prize-note">Cash Prize — Highest Value!</div>
+        </div>
+
+        <div class="prizes-grid">
+            <div class="prize-card">
+                <div class="prize-rank">2nd Prize</div>
+                <div class="prize-icon">📱</div>
+                <div class="prize-name">iPhone 17 Pro</div>
+                <div class="prize-value">Latest Model</div>
+            </div>
+            <div class="prize-card">
+                <div class="prize-rank">3rd Prize</div>
+                <div class="prize-icon">💻</div>
+                <div class="prize-name">Laptop Core i5</div>
+                <div class="prize-value">Brand New</div>
+            </div>
+        </div>
+
+        <div class="consolation-section">
+            <div class="consolation-title">+ Consolation Prizes</div>
+            <div class="consolation-items">
+                <div class="consolation-item">
+                    <span>🔊</span>
+                    Bluetooth Speakers
+                </div>
+                <div class="consolation-item">
+                    <span>🔋</span>
+                    Power Banks
+                </div>
+                <div class="consolation-item">
+                    <span>🍳</span>
+                    Air Fryers
+                </div>
+                <div class="consolation-item">
+                    <span>🍚</span>
+                    Rice Cookers
+                </div>
+            </div>
+        </div>
+
+        <!-- UPDATED: Changed from RM 20/ticket with 5 tickets per book to RM 10/ticket with 10 tickets per book -->
+        <div class="ticket-section">
+            <div class="ticket-label">Ticket Price</div>
+            <div class="ticket-price"><span>RM</span> 10 <span>/ ticket</span></div>
+            
+            <div class="ticket-options">
+                <div class="ticket-option">Buy Single Ticket</div>
+                <div class="ticket-option secondary">Buy Full Book (10)</div>
+            </div>
+
+            <div class="bundle-promo">
+                <div class="bundle-text">🎁 Buy Full Book (10 tickets) for only <span>RM 100</span></div>
+            </div>
+        </div>
+
+        <!-- ADDED: How to Buy section -->
+        <div class="how-to-buy">
+            <div class="how-to-buy-title">📱 How to Get Your Tickets</div>
+            <div class="how-to-buy-steps">
+                <div class="buy-step">
+                    <span class="buy-step-icon">👥</span>
+                    <span class="buy-step-text">Contact Zone<br>Committee</span>
+                </div>
+                <div class="buy-step">
+                    <span class="buy-step-icon">📘</span>
+                    <span class="buy-step-text">Message us<br>on Facebook</span>
+                </div>
+                <div class="buy-step">
+                    <span class="buy-step-icon">🌐</span>
+                    <span class="buy-step-text">Visit our<br>Website</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="donate-section">
+            <div class="donate-icon">🤝💛</div>
+            <div class="donate-title">Give Hope to Refugee Children</div>
+            <div class="donate-text">
+                Can't join the raffle? You can still make a difference!<br>
+                Buy tickets to sponsor refugee education programs
+            </div>
+        </div>
+
+        <!-- UPDATED: Refugee-focused, marketable keywords -->
+        <div class="cause-section">
+            <div class="cause-title">Your Support Helps Refugees</div>
+            <div class="cause-items">
+                <div class="cause-item">
+                    <div class="cause-icon">🏠</div>
+                    <div class="cause-name">Refugee Shelter</div>
+                    <div class="cause-desc">Safe Housing</div>
+                </div>
+                <div class="cause-item">
+                    <div class="cause-icon">💪</div>
+                    <div class="cause-name">Community Aid</div>
+                    <div class="cause-desc">Emergency Support</div>
+                </div>
+                <div class="cause-item">
+                    <div class="cause-icon">📚</div>
+                    <div class="cause-name">Education</div>
+                    <div class="cause-desc">Learning Centres</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="live-draw">
+                <div class="live-dot"></div>
+                <span class="live-text">LIVE DRAW ON FACEBOOK</span>
+            </div>
+            <div class="contact-info">
+                Draw Date: 01 April 2026<br>
+                Contact CEAM Committee for tickets
+            </div>
+            <!-- ADDED: Contact links for Facebook and Website -->
+            <div class="contact-links">
+                <a href="https://facebook.com/ceamalaysia" class="contact-link" target="_blank">
+                    <span class="contact-icon">📘</span>
+                    @ceamalaysia
+                </a>
+                <a href="https://ceamalaysia.org" class="contact-link" target="_blank">
+                    <span class="contact-icon">🌐</span>
+                    ceamalaysia.org
+                </a>
+            </div>
+        </div>
+
+        <!-- UPDATED: Terms with refugee-focused keywords -->
+        <div class="terms-section">
+            <strong>100% proceeds support</strong> K'Cho & Chin refugee shelter, education & community aid programs.<br>
+            Winners notified via phone & announced on <strong>Facebook Live</strong>. Terms & Conditions apply.
+        </div>
+
+        <div class="decorative-bottom"></div>
+    </div>
+
+    <!-- ADDED: Export to PNG JavaScript -->
+    <script>
+        /**
+         * Facebook Recommended Image Sizes:
+         * - Portrait Post: 1080 x 1350 px (4:5 ratio) - Best for mobile feed
+         * - Square Post: 1080 x 1080 px 
+         * - Landscape: 1200 x 630 px
+         * - Stories: 1080 x 1920 px
+         */
+
+        // Export for Facebook Post (1080x1350 - Portrait 4:5 ratio) - FIT ALL CONTENT
+        function exportForFacebook() {
+            const btn = document.getElementById('exportFbBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="icon">⏳</span><span>Exporting...</span>';
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            const poster = document.getElementById('poster');
+            const targetWidth = 1080;
+            const targetHeight = 1350;
+            
+            // Capture at high resolution first
+            html2canvas(poster, {
+                scale: 3, // High quality capture
+                useCORS: true,
+                backgroundColor: '#0a1628',
+                logging: false
+            }).then(canvas => {
+                const finalCanvas = document.createElement('canvas');
+                finalCanvas.width = targetWidth;
+                finalCanvas.height = targetHeight;
+                const ctx = finalCanvas.getContext('2d');
+                
+                // Fill background with gradient
+                const gradient = ctx.createLinearGradient(0, 0, targetWidth, targetHeight);
+                gradient.addColorStop(0, '#1a4b8c');
+                gradient.addColorStop(0.3, '#132744');
+                gradient.addColorStop(0.7, '#0a1628');
+                gradient.addColorStop(1, '#132744');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, targetWidth, targetHeight);
+                
+                // IMPORTANT: Scale to FIT entire poster (no cropping)
+                const scaleX = targetWidth / canvas.width;
+                const scaleY = targetHeight / canvas.height;
+                const scale = Math.min(scaleX, scaleY); // Use smaller scale to fit ALL content
+                
+                const drawWidth = canvas.width * scale;
+                const drawHeight = canvas.height * scale;
+                const offsetX = (targetWidth - drawWidth) / 2; // Center horizontally
+                const offsetY = (targetHeight - drawHeight) / 2; // Center vertically
+                
+                ctx.drawImage(canvas, offsetX, offsetY, drawWidth, drawHeight);
+                
+                // Download
+                const link = document.createElement('a');
+                link.download = 'CEAM-Raffle-Facebook-1080x1350.png';
+                link.href = finalCanvas.toDataURL('image/png');
+                link.click();
+                
+                btn.innerHTML = originalText;
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }).catch(err => {
+                console.error('Export failed:', err);
+                alert('Export failed. Please try again.');
+                btn.innerHTML = originalText;
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            });
+        }
+
+        // Export for Facebook - FULL HEIGHT (poster's natural aspect ratio scaled to 1080 width)
+        function exportForFacebookSquare() {
+            const btn = document.getElementById('exportFbSqBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="icon">⏳</span><span>Exporting...</span>';
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            const poster = document.getElementById('poster');
+            const targetWidth = 1080;
+            
+            // Capture at high resolution
+            html2canvas(poster, {
+                scale: 3,
+                useCORS: true,
+                backgroundColor: '#0a1628',
+                logging: false
+            }).then(canvas => {
+                // Calculate height to maintain aspect ratio (full poster, no crop)
+                const aspectRatio = canvas.height / canvas.width;
+                const targetHeight = Math.round(targetWidth * aspectRatio);
+                
+                const finalCanvas = document.createElement('canvas');
+                finalCanvas.width = targetWidth;
+                finalCanvas.height = targetHeight;
+                const ctx = finalCanvas.getContext('2d');
+                
+                // Draw poster at full size (no cropping)
+                ctx.drawImage(canvas, 0, 0, targetWidth, targetHeight);
+                
+                // Download
+                const link = document.createElement('a');
+                link.download = 'CEAM-Raffle-Facebook-Full-1080w.png';
+                link.href = finalCanvas.toDataURL('image/png');
+                link.click();
+                
+                btn.innerHTML = originalText;
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }).catch(err => {
+                console.error('Export failed:', err);
+                alert('Export failed. Please try again.');
+                btn.innerHTML = originalText;
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            });
+        }
+
+        // Export as High-Resolution PNG (4x scale for print quality)
+        function exportAsHighRes() {
+            const btn = document.getElementById('exportHiResBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="icon">⏳</span><span>Processing...</span>';
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            const poster = document.getElementById('poster');
+            
+            html2canvas(poster, {
+                scale: 4, // 4x for high-res print quality (~2400px width)
+                useCORS: true,
+                backgroundColor: '#0a1628',
+                logging: false
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'CEAM-Raffle-Poster-HighRes.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                btn.innerHTML = originalText;
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }).catch(err => {
+                console.error('Export failed:', err);
+                alert('Export failed. Please try again.');
+                btn.innerHTML = originalText;
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            });
+        }
+    </script>
+</body>
+</html>

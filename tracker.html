@@ -1,0 +1,2505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEAM Raffle - Ticket Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1A4B8C;
+            --primary-dark: #0D3A6E;
+            --primary-light: #2E6BB8;
+            --ring-blue: #3B7DC9;
+            --gold: #D4A84B;
+            --gold-light: #E8C97D;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --purple: #8b5cf6;
+            --bg-dark: #0a1628;
+            --bg-card: #ffffff;
+            --text-dark: #1a1a2e;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #132744 50%, #1a4b8c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* ============ LOGIN SCREEN ============ */
+        /* Password-protected login for admin access only */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #0a1628 0%, #132744 50%, #1a4b8c 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-overlay.hidden {
+            display: none;
+        }
+
+        .login-box {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        .login-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            border: 4px solid var(--primary);
+            box-shadow: 0 8px 30px rgba(26,75,140,0.3);
+        }
+
+        .login-box h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .login-box .subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .login-form label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(26,75,140,0.15);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--ring-blue) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26,75,140,0.4);
+        }
+
+        .login-error {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .remember-me input {
+            width: auto;
+        }
+
+        .login-footer {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--ring-blue) 100%);
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+
+        .header h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 28px;
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.8);
+            font-size: 13px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-card .icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-card.sold .value { color: var(--success); }
+        .stat-card.reserved .value { color: var(--warning); }
+        .stat-card.available .value { color: var(--ring-blue); }
+
+        /* Main Panel */
+        .main-panel {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        /* Controls */
+        .controls {
+            padding: 25px;
+            background: #f8fafc;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .control-group input,
+        .control-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .control-group input:focus,
+        .control-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(26,75,140,0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--ring-blue) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26,75,140,0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold) 0%, #c49a3d 100%);
+            color: var(--primary-dark);
+        }
+
+        .btn-purple {
+            background: linear-gradient(135deg, var(--purple) 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .btn-outline {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead {
+            background: var(--primary);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Status Badges */
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status.available {
+            background: #dbeafe;
+            color: var(--primary);
+        }
+
+        .status.sold {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .status.reserved {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status.donated {
+            background: #fce7f3;
+            color: #be185d;
+        }
+
+        /* Edit Form Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--ring-blue) 100%);
+            padding: 20px 25px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+
+        .modal-close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .modal-footer {
+            padding: 15px 25px 25px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* File Upload */
+        .file-upload {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+        }
+
+        .file-upload .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .file-upload p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .file-upload input {
+            display: none;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state .icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        /* Results Count */
+        .results-info {
+            padding: 15px 25px;
+            background: #f0f9ff;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--primary);
+        }
+
+        .results-info strong {
+            color: var(--primary-dark);
+        }
+
+        /* Action Buttons in Table */
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn.edit {
+            background: #dbeafe;
+            color: var(--primary);
+        }
+
+        .action-btn.edit:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Sync Status Bar */
+        .sync-status-bar {
+            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+            border-radius: 12px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(4, 120, 87, 0.3);
+        }
+
+        .sync-status-bar.syncing {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        }
+
+        .sync-status-bar.error {
+            background: linear-gradient(135deg, #991b1b 0%, #dc2626 100%);
+        }
+
+        .sync-status-bar.paused {
+            background: linear-gradient(135deg, #92400e 0%, #d97706 100%);
+        }
+
+        .sync-status-bar.write-enabled {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+
+        .sync-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .sync-icon {
+            font-size: 20px;
+        }
+
+        .sync-icon.spinning {
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .sync-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .sync-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sync-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .sync-btn.disconnect {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .sync-btn.disconnect:hover {
+            background: rgba(239, 68, 68, 0.5);
+        }
+
+        /* Security Badge */
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 11px;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+            max-width: 350px;
+        }
+
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--danger); }
+        .toast.warning { border-left: 4px solid var(--warning); }
+        .toast.info { border-left: 4px solid var(--primary); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* ============ QUICK ACTIONS PANEL ============ */
+        /* Easy buttons for non-tech admins to do common tasks */
+        .quick-actions {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .quick-actions-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .quick-actions-header h3 {
+            font-size: 16px;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .help-tip {
+            background: var(--primary);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            cursor: help;
+        }
+
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .quick-btn {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 18px 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .quick-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .quick-btn.sell {
+            border-color: var(--success);
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .quick-btn.sell:hover {
+            background: var(--success);
+            color: white;
+        }
+
+        .quick-btn.find {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        }
+
+        .quick-btn.find:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .quick-btn.reserve {
+            border-color: var(--warning);
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        }
+
+        .quick-btn.reserve:hover {
+            background: var(--warning);
+            color: white;
+        }
+
+        .quick-btn.report {
+            border-color: var(--purple);
+            background: linear-gradient(135deg, #faf5ff 0%, #ede9fe 100%);
+        }
+
+        .quick-btn.report:hover {
+            background: var(--purple);
+            color: white;
+        }
+
+        .quick-icon {
+            display: block;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .quick-label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: inherit;
+        }
+
+        .quick-desc {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .quick-btn:hover .quick-desc {
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Quick Sell Modal */
+        .quick-modal {
+            background: white;
+            border-radius: 20px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .quick-modal .modal-header {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        }
+
+        .quick-modal.reserve .modal-header {
+            background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+        }
+
+        .quick-modal.report .modal-header {
+            background: linear-gradient(135deg, var(--purple) 0%, #7c3aed 100%);
+        }
+
+        /* Report Summary */
+        .report-summary {
+            display: grid;
+            gap: 15px;
+        }
+
+        .report-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .report-item .label {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .report-item .value {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+        }
+
+        .report-item.highlight {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .report-item.highlight .value {
+            color: var(--success);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .control-group {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .login-box {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ============ LOGIN SCREEN ============ -->
+    <!-- Password protected - only authorized admins can access -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <img src="CEAM LOGO.png" alt="CEAM" class="login-logo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%231A4B8C%22/><text x=%2250%22 y=%2260%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2230%22 font-family=%22Arial%22>C</text></svg>'">
+            <h1>🔐 Admin Login</h1>
+            <p class="subtitle">CEAM Raffle Ticket Tracker</p>
+            
+            <div class="login-error" id="loginError">
+                ❌ Incorrect password. Please try again.
+            </div>
+            
+            <!-- First Time Setup Form -->
+            <form class="login-form" id="setupForm" onsubmit="setupPassword(event)" style="display: none;">
+                <div style="background: #dbeafe; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <p style="margin: 0; font-size: 13px; color: var(--primary);">
+                        🎉 <strong>First Time Setup!</strong><br>
+                        Create a password to secure your tracker.
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label>🔑 Create Password</label>
+                    <input type="password" id="newPassword" placeholder="Create a strong password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label>🔑 Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="login-btn" style="background: linear-gradient(135deg, var(--success) 0%, #059669 100%);">
+                    ✅ Set Password & Continue
+                </button>
+            </form>
+            
+            <!-- Regular Login Form -->
+            <form class="login-form" id="loginForm" onsubmit="attemptLogin(event)">
+                <div class="form-group">
+                    <label>🔑 Admin Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter admin password" autofocus required>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    🚀 Access Dashboard
+                </button>
+                
+                <label class="remember-me">
+                    <input type="checkbox" id="rememberLogin">
+                    Keep me logged in on this device
+                </label>
+            </form>
+            
+            <div class="login-footer" id="loginFooter">
+                🔒 Secure access for authorized CEAM staff only<br>
+                <a href="#" onclick="showResetOption(event)" style="color: var(--primary); font-size: 11px;">Forgot password? Reset here</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header with Logout Button -->
+        <div class="header">
+            <div class="header-left">
+                <img src="CEAM LOGO.png" alt="CEAM" class="header-logo" onerror="this.style.display='none'">
+                <div>
+                    <h1>🎟️ CEAM Raffle Ticket Tracker</h1>
+                    <p>Kumthi Charity Raffle 2026 • Secure Two-Way Sync</p>
+                </div>
+            </div>
+            <div class="header-actions" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                <button class="btn btn-purple" onclick="showConnectModal()" title="Connect to Google Sheets for real-time sync">
+                    🔗 Connect Sheet
+                </button>
+                <button class="btn btn-gold" onclick="exportCSV()" title="Download all data as CSV file">
+                    📥 Export CSV
+                </button>
+                <button class="btn btn-outline" onclick="logout()" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: white;" title="Log out of admin panel">
+                    🚪 Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Sync Status Bar -->
+        <div id="syncStatusBar" class="sync-status-bar" style="display: none;">
+            <div class="sync-info">
+                <span class="sync-icon" id="syncIcon">✅</span>
+                <span id="syncText">Connected</span>
+                <span class="security-badge" id="securityBadge">🔒 Secure</span>
+            </div>
+            <div class="sync-actions">
+                <span id="lastSyncTime" style="font-size: 12px; opacity: 0.8;"></span>
+                <button class="sync-btn" onclick="manualSync()">🔄 Sync Now</button>
+                <button class="sync-btn" onclick="toggleAutoSync()" id="autoSyncBtn">⏸️ Pause</button>
+                <button class="sync-btn disconnect" onclick="disconnectSheet()">❌ Disconnect</button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="icon">🎫</div>
+                <div class="value" id="totalTickets">0</div>
+                <div class="label">Total Tickets</div>
+            </div>
+            <div class="stat-card sold">
+                <div class="icon">✅</div>
+                <div class="value" id="soldTickets">0</div>
+                <div class="label">Sold</div>
+            </div>
+            <div class="stat-card reserved">
+                <div class="icon">📌</div>
+                <div class="value" id="reservedTickets">0</div>
+                <div class="label">Reserved</div>
+            </div>
+            <div class="stat-card available">
+                <div class="icon">🎯</div>
+                <div class="value" id="availableTickets">0</div>
+                <div class="label">Available</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">💰</div>
+                <div class="value" id="totalRevenue">RM 0</div>
+                <div class="label">Revenue</div>
+            </div>
+        </div>
+
+        <!-- ============ QUICK ACTIONS FOR NON-TECH ADMINS ============ -->
+        <!-- Easy-to-use buttons for common tasks -->
+        <div class="quick-actions" id="quickActionsPanel" style="display: none;">
+            <div class="quick-actions-header">
+                <h3>⚡ Quick Actions</h3>
+                <span class="help-tip" title="Click any button to perform common tasks quickly">❓</span>
+            </div>
+            <div class="quick-actions-grid">
+                <button class="quick-btn sell" onclick="quickSellTicket()">
+                    <span class="quick-icon">🎫</span>
+                    <span class="quick-label">Sell Ticket</span>
+                    <span class="quick-desc">Mark ticket as sold</span>
+                </button>
+                <button class="quick-btn find" onclick="document.getElementById('searchInput').focus()">
+                    <span class="quick-icon">🔍</span>
+                    <span class="quick-label">Find Ticket</span>
+                    <span class="quick-desc">Search by number or name</span>
+                </button>
+                <button class="quick-btn reserve" onclick="quickReserveTicket()">
+                    <span class="quick-icon">📌</span>
+                    <span class="quick-label">Reserve Ticket</span>
+                    <span class="quick-desc">Hold for customer</span>
+                </button>
+                <button class="quick-btn report" onclick="showQuickReport()">
+                    <span class="quick-icon">📊</span>
+                    <span class="quick-label">View Report</span>
+                    <span class="quick-desc">Sales summary</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Panel -->
+        <div class="main-panel">
+            <!-- File Upload -->
+            <div class="controls" id="uploadSection">
+                <div class="file-upload" onclick="document.getElementById('csvFile').click()">
+                    <div class="icon">📁</div>
+                    <p><strong>Click to upload CSV</strong> or drag and drop</p>
+                    <p style="font-size: 12px; margin-top: 5px;">ceam_raffle_tickets_tracking.csv</p>
+                    <input type="file" id="csvFile" accept=".csv" onchange="loadCSV(event)">
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="loadDefaultData()">
+                        🔄 Load Default (6000 tickets)
+                    </button>
+                    <button class="btn btn-purple" onclick="showConnectModal()">
+                        📗 Connect Google Sheet
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Controls (hidden until data loaded) -->
+            <div class="controls" id="searchSection" style="display: none;">
+                <div class="control-group">
+                    <label>Search</label>
+                    <input type="text" id="searchInput" placeholder="Ticket #, Name, Phone..." oninput="filterData()">
+                </div>
+                <div class="control-group" style="max-width: 180px;">
+                    <label>Status</label>
+                    <select id="statusFilter" onchange="filterData()">
+                        <option value="">All Status</option>
+                        <option value="Available">Available</option>
+                        <option value="Sold">Sold</option>
+                        <option value="Reserved">Reserved</option>
+                        <option value="Donated">Donated</option>
+                    </select>
+                </div>
+                <div class="control-group" style="max-width: 180px;">
+                    <label>Book</label>
+                    <select id="bookFilter" onchange="filterData()">
+                        <option value="">All Books</option>
+                    </select>
+                </div>
+                <div class="control-group" style="max-width: 180px;">
+                    <label>Zone</label>
+                    <select id="zoneFilter" onchange="filterData()">
+                        <option value="">All Zones</option>
+                    </select>
+                </div>
+                <button class="btn btn-outline" onclick="clearFilters()">
+                    🔄 Clear
+                </button>
+            </div>
+
+            <!-- Results Info -->
+            <div class="results-info" id="resultsInfo" style="display: none;">
+                Showing <strong id="showingCount">0</strong> of <strong id="totalCount">0</strong> tickets
+            </div>
+
+            <!-- Table -->
+            <div class="table-container" id="tableContainer">
+                <div class="empty-state">
+                    <div class="icon">📊</div>
+                    <h3>No Data Loaded</h3>
+                    <p>Upload a CSV, connect Google Sheets, or load default data</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>✏️ Edit Ticket</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editIndex">
+                <input type="hidden" id="editRowNum">
+                <div class="form-group">
+                    <label>Ticket Number</label>
+                    <input type="text" id="editTicketNum" readonly style="background: #f3f4f6;">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="editStatus">
+                        <option value="Available">Available</option>
+                        <option value="Sold">Sold</option>
+                        <option value="Reserved">Reserved</option>
+                        <option value="Donated">Donated</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Buyer Name</label>
+                    <input type="text" id="editName" placeholder="Enter buyer name">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" id="editPhone" placeholder="Enter phone number">
+                </div>
+                <div class="form-group">
+                    <label>Zone</label>
+                    <input type="text" id="editZone" placeholder="Enter zone">
+                </div>
+                <div class="form-group">
+                    <label>Sold By</label>
+                    <input type="text" id="editSoldBy" placeholder="Seller name">
+                </div>
+                <div class="form-group">
+                    <label>Payment Status</label>
+                    <select id="editPayment">
+                        <option value="">Not Paid</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <input type="text" id="editNotes" placeholder="Additional notes">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-success" onclick="saveEdit()" id="saveEditBtn">💾 Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Sell Modal - Complete form with all necessary fields -->
+    <div class="modal-overlay" id="quickSellModal">
+        <div class="quick-modal" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>🎫 Quick Sell Ticket</h2>
+                <button class="modal-close" onclick="closeQuickSellModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Row 1: Ticket Number -->
+                <div class="form-group">
+                    <label>📋 Ticket Number <span style="color: var(--danger);">*</span></label>
+                    <input type="text" id="quickSellTicketNum" placeholder="e.g., CEAM-0001 or just 1" oninput="validateQuickTicket(this, 'sell')">
+                    <p id="quickSellStatus" style="font-size: 12px; margin-top: 5px; color: var(--text-muted);"></p>
+                </div>
+                
+                <!-- Row 2: Buyer Name & Phone (side by side) -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>👤 Buyer Name <span style="color: var(--danger);">*</span></label>
+                        <input type="text" id="quickSellName" placeholder="Full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>📞 Phone Number <span style="color: var(--danger);">*</span></label>
+                        <input type="tel" id="quickSellPhone" placeholder="e.g., 012-3456789" required>
+                    </div>
+                </div>
+                
+                <!-- Row 3: Zone & Payment (side by side) -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>📍 Zone / Area</label>
+                        <select id="quickSellZone">
+                            <option value="">Select zone...</option>
+                            <option value="KL">KL (Kuala Lumpur)</option>
+                            <option value="Selangor">Selangor</option>
+                            <option value="Penang">Penang</option>
+                            <option value="Johor">Johor</option>
+                            <option value="Perak">Perak</option>
+                            <option value="Sabah">Sabah</option>
+                            <option value="Sarawak">Sarawak</option>
+                            <option value="Online">Online</option>
+                            <option value="Event">Event/Booth</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>💳 Payment Method</label>
+                        <select id="quickSellPayment">
+                            <option value="Cash">💵 Cash</option>
+                            <option value="Online Transfer">📱 Online Transfer</option>
+                            <option value="QR Pay">📲 QR Pay (Touch n Go/GrabPay)</option>
+                            <option value="Pending">⏳ Pending Payment</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Row 4: Seller Name -->
+                <div class="form-group">
+                    <label>🏷️ Sold By (Your Name)</label>
+                    <input type="text" id="quickSellSeller" placeholder="Who sold this ticket?">
+                </div>
+                
+                <!-- Row 5: Notes -->
+                <div class="form-group">
+                    <label>📝 Notes (Optional)</label>
+                    <input type="text" id="quickSellNotes" placeholder="Any special notes...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeQuickSellModal()">Cancel</button>
+                <button class="btn btn-success" onclick="confirmQuickSell()" id="confirmSellBtn">
+                    ✅ Mark as Sold
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Reserve Modal -->
+    <div class="modal-overlay" id="quickReserveModal">
+        <div class="quick-modal reserve">
+            <div class="modal-header">
+                <h2>📌 Reserve Ticket</h2>
+                <button class="modal-close" onclick="closeQuickReserveModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>📋 Ticket Number</label>
+                    <input type="text" id="quickReserveTicketNum" placeholder="e.g., CEAM-0001 or just 1" oninput="validateQuickTicket(this, 'reserve')">
+                    <p id="quickReserveStatus" style="font-size: 12px; margin-top: 5px; color: var(--text-muted);"></p>
+                </div>
+                <div class="form-group">
+                    <label>👤 Customer Name</label>
+                    <input type="text" id="quickReserveName" placeholder="Who is this reserved for?">
+                </div>
+                <div class="form-group">
+                    <label>📞 Phone Number</label>
+                    <input type="text" id="quickReservePhone" placeholder="Contact number">
+                </div>
+                <div class="form-group">
+                    <label>📝 Notes</label>
+                    <input type="text" id="quickReserveNotes" placeholder="Any special notes">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeQuickReserveModal()">Cancel</button>
+                <button class="btn btn-gold" onclick="confirmQuickReserve()" id="confirmReserveBtn">
+                    📌 Reserve Ticket
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Report Modal -->
+    <div class="modal-overlay" id="quickReportModal">
+        <div class="quick-modal report">
+            <div class="modal-header">
+                <h2>📊 Sales Report</h2>
+                <button class="modal-close" onclick="closeQuickReportModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="report-summary" id="reportSummary">
+                    <!-- Filled by JavaScript -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeQuickReportModal()">Close</button>
+                <button class="btn btn-purple" onclick="exportCSV()">📥 Export Full Report</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Connect Modal - Only shows when "Connect Sheet" button is clicked -->
+    <div class="modal-overlay" id="connectModal">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+                <h2>🔗 Connect to Google Sheets</h2>
+                <button class="modal-close" onclick="closeConnectModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Security Notice -->
+                <div style="background: #fef3c7; border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid #fcd34d;">
+                    <p style="font-size: 13px; color: #92400e; margin: 0;">
+                        🔒 <strong>Secure Connection:</strong> Your data is protected with token-based authentication. Only devices with the correct token can access your sheet.
+                    </p>
+                </div>
+
+                <!-- Apps Script URL -->
+                <div class="form-group">
+                    <label>Apps Script Web App URL</label>
+                    <input type="text" id="appsScriptUrl" placeholder="https://script.google.com/macros/s/.../exec">
+                </div>
+
+                <!-- Secret Token -->
+                <div class="form-group">
+                    <label>Secret Token (from your Apps Script)</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="password" id="secretToken" placeholder="Your secret token" style="flex: 1;">
+                        <button type="button" class="btn btn-outline" onclick="toggleTokenVisibility()" style="padding: 12px;">👁️</button>
+                    </div>
+                    <p style="font-size: 11px; color: var(--text-muted); margin-top: 5px;">
+                        This must match the SECRET_TOKEN in your Apps Script
+                    </p>
+                </div>
+
+                <!-- Test Connection -->
+                <button class="btn btn-primary" onclick="testConnection()" style="width: 100%; margin-bottom: 20px;">
+                    🧪 Test Connection
+                </button>
+
+                <!-- Connection Status -->
+                <div id="connectionStatus" style="display: none; padding: 15px; border-radius: 10px; margin-bottom: 20px;"></div>
+
+                <!-- Setup Guide -->
+                <details style="background: #f8fafc; border-radius: 12px; padding: 15px;">
+                    <summary style="cursor: pointer; font-weight: 600; color: var(--primary);">📖 Setup Guide</summary>
+                    <div style="margin-top: 15px; font-size: 13px; line-height: 1.8;">
+                        <ol style="padding-left: 20px;">
+                            <li>Create a new Google Sheet for your raffle data</li>
+                            <li>Go to <strong>Extensions → Apps Script</strong></li>
+                            <li>Delete existing code and paste the provided <strong>Code.gs</strong></li>
+                            <li><strong>Change the SECRET_TOKEN</strong> to a unique random string</li>
+                            <li>Click <strong>Deploy → New deployment</strong></li>
+                            <li>Type: <strong>Web app</strong></li>
+                            <li>Execute as: <strong>Me</strong></li>
+                            <li>Access: <strong>Anyone</strong></li>
+                            <li>Click <strong>Deploy</strong> and copy the URL</li>
+                            <li>Paste URL and token here, then test connection</li>
+                        </ol>
+                    </div>
+                </details>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeConnectModal()">Cancel</button>
+                <button class="btn btn-success" onclick="connectToSheet()" id="connectBtn" disabled>
+                    🔗 Connect & Sync
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============ AUTHENTICATION CONFIG ============
+        // Password is set by admin on first use - NOT hardcoded!
+        // Stored securely in localStorage (encrypted with simple obfuscation)
+        let isLoggedIn = false;
+        
+        // Get or check admin password (set on first use)
+        function getAdminPassword() {
+            const stored = localStorage.getItem('ceam_admin_pw');
+            if (stored) {
+                // Simple decode (not military-grade, but hides from casual view)
+                return atob(stored);
+            }
+            return null;
+        }
+        
+        function setAdminPassword(password) {
+            // Simple encode to hide from casual localStorage viewing
+            localStorage.setItem('ceam_admin_pw', btoa(password));
+        }
+        
+        function isPasswordSet() {
+            return localStorage.getItem('ceam_admin_pw') !== null;
+        }
+
+        // ============ DATA STATE ============
+        let ticketData = [];
+        let filteredData = [];
+        const headers = [
+            'Ticket_Number', 'Status', 'Sale_Type', 'Buyer_Name', 'Buyer_Phone',
+            'Buyer_Zone', 'Sold_By', 'Payment_Status', 'Payment_Date', 'Book_Number',
+            'Donated_To_Education', 'Notes'
+        ];
+
+        // ============ SYNC STATE ============
+        let syncConfig = {
+            appsScriptUrl: null,
+            secretToken: null,
+            autoSync: true,
+            syncInterval: 30000, // 30 seconds
+            lastSync: null
+        };
+        let syncIntervalId = null;
+        let connectionVerified = false;
+
+        // ============ LOGIN/LOGOUT FUNCTIONS ============
+        // Password protection for admin access only
+        // Session kept for 1 hour (3600000 ms) - refreshes on activity
+        const SESSION_DURATION = 3600000; // 1 hour in milliseconds
+
+        // Setup password on first use
+        function setupPassword(event) {
+            event.preventDefault();
+            const newPw = document.getElementById('newPassword').value;
+            const confirmPw = document.getElementById('confirmPassword').value;
+            
+            if (newPw.length < 6) {
+                showToast('Password must be at least 6 characters!', 'warning');
+                return;
+            }
+            
+            if (newPw !== confirmPw) {
+                showToast('Passwords do not match!', 'error');
+                document.getElementById('confirmPassword').value = '';
+                document.getElementById('confirmPassword').focus();
+                return;
+            }
+            
+            // Save the password
+            setAdminPassword(newPw);
+            
+            // Auto-login after setup
+            isLoggedIn = true;
+            localStorage.setItem('ceam_admin_session', 'active');
+            localStorage.setItem('ceam_session_time', Date.now().toString());
+            localStorage.setItem('ceam_remember_me', 'true');
+            
+            document.getElementById('loginOverlay').classList.add('hidden');
+            showToast('🎉 Password set! Welcome to CEAM Tracker!', 'success');
+            startSessionTracker();
+        }
+        
+        function attemptLogin(event) {
+            event.preventDefault();
+            const password = document.getElementById('loginPassword').value;
+            const remember = document.getElementById('rememberLogin').checked;
+            const errorDiv = document.getElementById('loginError');
+            
+            const storedPassword = getAdminPassword();
+
+            if (password === storedPassword) {
+                isLoggedIn = true;
+                document.getElementById('loginOverlay').classList.add('hidden');
+                
+                // Always save session (persists through refresh)
+                // "Remember me" extends to 7 days, otherwise 1 hour
+                localStorage.setItem('ceam_admin_session', 'active');
+                localStorage.setItem('ceam_session_time', Date.now().toString());
+                localStorage.setItem('ceam_remember_me', remember ? 'true' : 'false');
+                
+                showToast('Welcome, Admin! 👋', 'success');
+                
+                // Start session activity tracker
+                startSessionTracker();
+            } else {
+                errorDiv.classList.add('show');
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginPassword').focus();
+                
+                // Shake animation for error feedback
+                document.querySelector('.login-box').style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    document.querySelector('.login-box').style.animation = '';
+                }, 500);
+            }
+        }
+        
+        // Show password reset option
+        function showResetOption(event) {
+            event.preventDefault();
+            if (confirm('⚠️ Reset password?\n\nThis will clear the current password and require you to set a new one.\n\nNote: You will need to re-enter Google Sheet connection details.')) {
+                localStorage.removeItem('ceam_admin_pw');
+                localStorage.removeItem('ceam_admin_session');
+                localStorage.removeItem('ceam_session_time');
+                location.reload();
+            }
+        }
+        
+        // Initialize login form based on whether password is set
+        function initLoginForm() {
+            if (isPasswordSet()) {
+                // Show regular login
+                document.getElementById('setupForm').style.display = 'none';
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('loginFooter').style.display = 'block';
+            } else {
+                // Show first-time setup
+                document.getElementById('setupForm').style.display = 'block';
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('loginFooter').style.display = 'none';
+                document.getElementById('newPassword').focus();
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                isLoggedIn = false;
+                localStorage.removeItem('ceam_admin_session');
+                localStorage.removeItem('ceam_session_time');
+                localStorage.removeItem('ceam_remember_me');
+                document.getElementById('loginOverlay').classList.remove('hidden');
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginError').classList.remove('show');
+                showToast('Logged out successfully', 'info');
+            }
+        }
+
+        function checkSavedSession() {
+            const session = localStorage.getItem('ceam_admin_session');
+            const sessionTime = localStorage.getItem('ceam_session_time');
+            const rememberMe = localStorage.getItem('ceam_remember_me') === 'true';
+            
+            // Session duration: 7 days if "remember me", otherwise 1 hour
+            const maxDuration = rememberMe ? 604800000 : SESSION_DURATION;
+            
+            if (session === 'active' && sessionTime) {
+                const elapsed = Date.now() - parseInt(sessionTime);
+                if (elapsed < maxDuration) {
+                    isLoggedIn = true;
+                    document.getElementById('loginOverlay').classList.add('hidden');
+                    
+                    // Refresh session time on page load to extend session
+                    refreshSession();
+                    startSessionTracker();
+                    return true;
+                } else {
+                    // Session expired, clear it
+                    clearSession();
+                    showToast('Session expired. Please login again.', 'warning');
+                }
+            }
+            return false;
+        }
+
+        // Refresh session timestamp (extends session on activity)
+        function refreshSession() {
+            if (isLoggedIn) {
+                localStorage.setItem('ceam_session_time', Date.now().toString());
+            }
+        }
+
+        // Clear all session data
+        function clearSession() {
+            localStorage.removeItem('ceam_admin_session');
+            localStorage.removeItem('ceam_session_time');
+            localStorage.removeItem('ceam_remember_me');
+        }
+
+        // Track user activity to keep session alive
+        function startSessionTracker() {
+            // Refresh session every 5 minutes while active
+            setInterval(() => {
+                if (isLoggedIn) {
+                    refreshSession();
+                }
+            }, 300000); // 5 minutes
+
+            // Refresh session on user activity
+            ['click', 'keypress', 'scroll', 'mousemove'].forEach(event => {
+                document.addEventListener(event, debounce(refreshSession, 60000), { passive: true });
+            });
+        }
+
+        // Debounce function to limit refresh calls
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // ============ QUICK ACTION FUNCTIONS ============
+        // Easy-to-use functions for non-tech admins
+        function quickSellTicket() {
+            if (ticketData.length === 0) {
+                showToast('Please load data first!', 'warning');
+                return;
+            }
+            document.getElementById('quickSellModal').classList.add('active');
+            document.getElementById('quickSellTicketNum').value = '';
+            document.getElementById('quickSellName').value = '';
+            document.getElementById('quickSellPhone').value = '';
+            document.getElementById('quickSellZone').value = '';
+            document.getElementById('quickSellPayment').value = 'Cash';
+            document.getElementById('quickSellSeller').value = localStorage.getItem('ceam_last_seller') || ''; // Remember last seller
+            document.getElementById('quickSellNotes').value = '';
+            document.getElementById('quickSellStatus').textContent = '';
+            document.getElementById('quickSellTicketNum').focus();
+        }
+
+        function closeQuickSellModal() {
+            document.getElementById('quickSellModal').classList.remove('active');
+        }
+
+        function quickReserveTicket() {
+            if (ticketData.length === 0) {
+                showToast('Please load data first!', 'warning');
+                return;
+            }
+            document.getElementById('quickReserveModal').classList.add('active');
+            document.getElementById('quickReserveTicketNum').value = '';
+            document.getElementById('quickReserveName').value = '';
+            document.getElementById('quickReservePhone').value = '';
+            document.getElementById('quickReserveNotes').value = '';
+            document.getElementById('quickReserveStatus').textContent = '';
+            document.getElementById('quickReserveTicketNum').focus();
+        }
+
+        function closeQuickReserveModal() {
+            document.getElementById('quickReserveModal').classList.remove('active');
+        }
+
+        function validateQuickTicket(input, type) {
+            let ticketNum = input.value.trim().toUpperCase();
+            
+            // Auto-format: if just a number, add CEAM- prefix
+            if (/^\d+$/.test(ticketNum)) {
+                ticketNum = 'CEAM-' + ticketNum.padStart(4, '0');
+            }
+            
+            const statusEl = document.getElementById(type === 'sell' ? 'quickSellStatus' : 'quickReserveStatus');
+            const ticket = ticketData.find(t => t.Ticket_Number === ticketNum);
+            
+            if (ticket) {
+                if (ticket.Status === 'Available') {
+                    statusEl.innerHTML = `<span style="color: var(--success);">✅ Ticket found: ${ticketNum} - Available</span>`;
+                } else {
+                    statusEl.innerHTML = `<span style="color: var(--warning);">⚠️ Ticket ${ticketNum} is already ${ticket.Status}</span>`;
+                }
+            } else if (ticketNum.length > 3) {
+                statusEl.innerHTML = `<span style="color: var(--danger);">❌ Ticket not found</span>`;
+            } else {
+                statusEl.textContent = '';
+            }
+        }
+
+        async function confirmQuickSell() {
+            let ticketNum = document.getElementById('quickSellTicketNum').value.trim().toUpperCase();
+            const buyerName = document.getElementById('quickSellName').value.trim();
+            const phone = document.getElementById('quickSellPhone').value.trim();
+            const zone = document.getElementById('quickSellZone').value;
+            const paymentMethod = document.getElementById('quickSellPayment').value;
+            const seller = document.getElementById('quickSellSeller').value.trim();
+            const notes = document.getElementById('quickSellNotes').value.trim();
+
+            // Auto-format ticket number
+            if (/^\d+$/.test(ticketNum)) {
+                ticketNum = 'CEAM-' + ticketNum.padStart(4, '0');
+            }
+
+            // Validation
+            if (!ticketNum) {
+                showToast('Please enter a ticket number', 'warning');
+                document.getElementById('quickSellTicketNum').focus();
+                return;
+            }
+            
+            if (!buyerName) {
+                showToast('Please enter buyer name', 'warning');
+                document.getElementById('quickSellName').focus();
+                return;
+            }
+            
+            if (!phone) {
+                showToast('Please enter phone number', 'warning');
+                document.getElementById('quickSellPhone').focus();
+                return;
+            }
+
+            const ticketIndex = ticketData.findIndex(t => t.Ticket_Number === ticketNum);
+            
+            if (ticketIndex === -1) {
+                showToast('Ticket not found!', 'error');
+                return;
+            }
+
+            const ticket = ticketData[ticketIndex];
+            
+            if (ticket.Status !== 'Available' && ticket.Status !== 'Reserved') {
+                if (!confirm(`This ticket is already ${ticket.Status}. Update anyway?`)) {
+                    return;
+                }
+            }
+
+            // Remember seller name for next sale
+            if (seller) {
+                localStorage.setItem('ceam_last_seller', seller);
+            }
+
+            // Update ticket data with all fields
+            ticketData[ticketIndex].Status = 'Sold';
+            ticketData[ticketIndex].Sale_Type = paymentMethod;
+            ticketData[ticketIndex].Buyer_Name = buyerName;
+            ticketData[ticketIndex].Buyer_Phone = phone;
+            ticketData[ticketIndex].Buyer_Zone = zone;
+            ticketData[ticketIndex].Sold_By = seller;
+            ticketData[ticketIndex].Payment_Status = paymentMethod === 'Pending' ? 'Pending' : 'Paid';
+            ticketData[ticketIndex].Payment_Date = new Date().toISOString().split('T')[0];
+            ticketData[ticketIndex].Notes = notes;
+
+            // Sync to Google Sheets if connected
+            if (connectionVerified && ticket._rowNum) {
+                await syncTicketToSheet(ticketIndex);
+            }
+
+            closeQuickSellModal();
+            updateStats();
+            filterData();
+            showToast(`🎉 Ticket ${ticketNum} sold to ${buyerName}!`, 'success');
+        }
+
+        async function confirmQuickReserve() {
+            let ticketNum = document.getElementById('quickReserveTicketNum').value.trim().toUpperCase();
+            const customerName = document.getElementById('quickReserveName').value.trim();
+            const phone = document.getElementById('quickReservePhone').value.trim();
+            const notes = document.getElementById('quickReserveNotes').value.trim();
+
+            // Auto-format ticket number
+            if (/^\d+$/.test(ticketNum)) {
+                ticketNum = 'CEAM-' + ticketNum.padStart(4, '0');
+            }
+
+            if (!ticketNum) {
+                showToast('Please enter a ticket number', 'warning');
+                return;
+            }
+
+            const ticketIndex = ticketData.findIndex(t => t.Ticket_Number === ticketNum);
+            
+            if (ticketIndex === -1) {
+                showToast('Ticket not found!', 'error');
+                return;
+            }
+
+            const ticket = ticketData[ticketIndex];
+            
+            if (ticket.Status !== 'Available') {
+                if (!confirm(`This ticket is ${ticket.Status}. Reserve anyway?`)) {
+                    return;
+                }
+            }
+
+            // Update ticket data
+            ticketData[ticketIndex].Status = 'Reserved';
+            ticketData[ticketIndex].Buyer_Name = customerName;
+            ticketData[ticketIndex].Buyer_Phone = phone;
+            ticketData[ticketIndex].Notes = notes;
+
+            // Sync to Google Sheets if connected
+            if (connectionVerified && ticket._rowNum) {
+                await syncTicketToSheet(ticketIndex);
+            }
+
+            closeQuickReserveModal();
+            updateStats();
+            filterData();
+            showToast(`📌 Ticket ${ticketNum} reserved for ${customerName || 'customer'}!`, 'success');
+        }
+
+        async function syncTicketToSheet(index) {
+            const ticket = ticketData[index];
+            try {
+                const values = [
+                    ticket.Ticket_Number,
+                    ticket.Status,
+                    ticket.Sale_Type || '',
+                    ticket.Buyer_Name || '',
+                    ticket.Buyer_Phone || '',
+                    ticket.Buyer_Zone || '',
+                    ticket.Sold_By || '',
+                    ticket.Payment_Status || '',
+                    ticket.Payment_Date || '',
+                    ticket.Book_Number || '',
+                    ticket.Donated_To_Education || '',
+                    ticket.Notes || ''
+                ];
+
+                const url = `${syncConfig.appsScriptUrl}?action=update&token=${encodeURIComponent(syncConfig.secretToken)}&row=${ticket._rowNum}&values=${encodeURIComponent(JSON.stringify(values))}`;
+                await fetch(url);
+            } catch (error) {
+                console.error('Sync error:', error);
+            }
+        }
+
+        function showQuickReport() {
+            if (ticketData.length === 0) {
+                showToast('Please load data first!', 'warning');
+                return;
+            }
+
+            const total = ticketData.length;
+            const sold = ticketData.filter(t => t.Status === 'Sold').length;
+            const reserved = ticketData.filter(t => t.Status === 'Reserved').length;
+            const available = ticketData.filter(t => t.Status === 'Available').length;
+            const donated = ticketData.filter(t => t.Status === 'Donated').length;
+            const revenue = sold * 10;
+            const potentialRevenue = total * 10;
+            const soldPercent = total > 0 ? ((sold / total) * 100).toFixed(1) : 0;
+
+            document.getElementById('reportSummary').innerHTML = `
+                <div class="report-item highlight">
+                    <span class="label">💰 Total Revenue</span>
+                    <span class="value">RM ${revenue.toLocaleString()}</span>
+                </div>
+                <div class="report-item">
+                    <span class="label">🎫 Total Tickets</span>
+                    <span class="value">${total.toLocaleString()}</span>
+                </div>
+                <div class="report-item">
+                    <span class="label">✅ Sold</span>
+                    <span class="value">${sold.toLocaleString()} (${soldPercent}%)</span>
+                </div>
+                <div class="report-item">
+                    <span class="label">📌 Reserved</span>
+                    <span class="value">${reserved.toLocaleString()}</span>
+                </div>
+                <div class="report-item">
+                    <span class="label">🎯 Available</span>
+                    <span class="value">${available.toLocaleString()}</span>
+                </div>
+                <div class="report-item">
+                    <span class="label">🎁 Donated</span>
+                    <span class="value">${donated.toLocaleString()}</span>
+                </div>
+                <div class="report-item" style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);">
+                    <span class="label">📈 Potential Total</span>
+                    <span class="value">RM ${potentialRevenue.toLocaleString()}</span>
+                </div>
+            `;
+
+            document.getElementById('quickReportModal').classList.add('active');
+        }
+
+        function closeQuickReportModal() {
+            document.getElementById('quickReportModal').classList.remove('active');
+        }
+
+        // ============ TOAST NOTIFICATIONS ============
+        function showToast(message, type = 'info', duration = 4000) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+            toast.innerHTML = `<span>${icons[type]}</span><span>${message}</span>`;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+
+        // ============ CSV HANDLING ============
+        function loadCSV(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                parseCSV(e.target.result);
+                showToast('CSV loaded successfully!', 'success');
+            };
+            reader.readAsText(file);
+        }
+
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            ticketData = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                const values = parseCSVLine(lines[i]);
+                if (values.length >= 2) {
+                    ticketData.push({
+                        Ticket_Number: values[0] || '',
+                        Status: values[1] || 'Available',
+                        Sale_Type: values[2] || '',
+                        Buyer_Name: values[3] || '',
+                        Buyer_Phone: values[4] || '',
+                        Buyer_Zone: values[5] || '',
+                        Sold_By: values[6] || '',
+                        Payment_Status: values[7] || '',
+                        Payment_Date: values[8] || '',
+                        Book_Number: values[9] || '',
+                        Donated_To_Education: values[10] || '',
+                        Notes: values[11] || '',
+                        _rowNum: i + 1
+                    });
+                }
+            }
+
+            initializeUI();
+        }
+
+        function parseCSVLine(line) {
+            const values = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    values.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            values.push(current.trim());
+            return values;
+        }
+
+        function loadDefaultData() {
+            ticketData = [];
+            for (let i = 1; i <= 6000; i++) {
+                const ticketNum = 'CEAM-' + String(i).padStart(4, '0');
+                const bookNum = 'Book-' + String(Math.ceil(i / 10)).padStart(4, '0');
+                ticketData.push({
+                    Ticket_Number: ticketNum,
+                    Status: 'Available',
+                    Sale_Type: '',
+                    Buyer_Name: '',
+                    Buyer_Phone: '',
+                    Buyer_Zone: '',
+                    Sold_By: '',
+                    Payment_Status: '',
+                    Payment_Date: '',
+                    Book_Number: bookNum,
+                    Donated_To_Education: '',
+                    Notes: '',
+                    _rowNum: i + 1
+                });
+            }
+            initializeUI();
+            showToast('Loaded 6000 default tickets', 'success');
+        }
+
+        // ============ UI INITIALIZATION ============
+        function initializeUI() {
+            document.getElementById('uploadSection').style.display = 'none';
+            document.getElementById('searchSection').style.display = 'flex';
+            document.getElementById('resultsInfo').style.display = 'block';
+            document.getElementById('quickActionsPanel').style.display = 'block'; // Show quick actions for admins
+
+            // Populate book filter
+            const books = [...new Set(ticketData.map(t => t.Book_Number))].filter(b => b);
+            const bookSelect = document.getElementById('bookFilter');
+            bookSelect.innerHTML = '<option value="">All Books</option>';
+            books.slice(0, 100).forEach(book => {
+                bookSelect.innerHTML += `<option value="${book}">${book}</option>`;
+            });
+
+            // Populate zone filter
+            const zones = [...new Set(ticketData.map(t => t.Buyer_Zone))].filter(z => z);
+            const zoneSelect = document.getElementById('zoneFilter');
+            zoneSelect.innerHTML = '<option value="">All Zones</option>';
+            zones.forEach(zone => {
+                zoneSelect.innerHTML += `<option value="${zone}">${zone}</option>`;
+            });
+
+            filteredData = [...ticketData];
+            updateStats();
+            renderTable();
+        }
+
+        // ============ STATISTICS ============
+        function updateStats() {
+            const total = ticketData.length;
+            const sold = ticketData.filter(t => t.Status === 'Sold').length;
+            const reserved = ticketData.filter(t => t.Status === 'Reserved').length;
+            const available = ticketData.filter(t => t.Status === 'Available').length;
+            const revenue = sold * 10;
+
+            document.getElementById('totalTickets').textContent = total.toLocaleString();
+            document.getElementById('soldTickets').textContent = sold.toLocaleString();
+            document.getElementById('reservedTickets').textContent = reserved.toLocaleString();
+            document.getElementById('availableTickets').textContent = available.toLocaleString();
+            document.getElementById('totalRevenue').textContent = 'RM ' + revenue.toLocaleString();
+        }
+
+        // ============ FILTERING ============
+        function filterData() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const status = document.getElementById('statusFilter').value;
+            const book = document.getElementById('bookFilter').value;
+            const zone = document.getElementById('zoneFilter').value;
+
+            filteredData = ticketData.filter(ticket => {
+                const matchSearch = !search || 
+                    ticket.Ticket_Number.toLowerCase().includes(search) ||
+                    (ticket.Buyer_Name || '').toLowerCase().includes(search) ||
+                    (ticket.Buyer_Phone || '').toLowerCase().includes(search) ||
+                    (ticket.Sold_By || '').toLowerCase().includes(search);
+                
+                const matchStatus = !status || ticket.Status === status;
+                const matchBook = !book || ticket.Book_Number === book;
+                const matchZone = !zone || ticket.Buyer_Zone === zone;
+
+                return matchSearch && matchStatus && matchBook && matchZone;
+            });
+
+            renderTable();
+        }
+
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('bookFilter').value = '';
+            document.getElementById('zoneFilter').value = '';
+            filteredData = [...ticketData];
+            renderTable();
+        }
+
+        // ============ TABLE RENDERING ============
+        function renderTable() {
+            const container = document.getElementById('tableContainer');
+            document.getElementById('showingCount').textContent = filteredData.length.toLocaleString();
+            document.getElementById('totalCount').textContent = ticketData.length.toLocaleString();
+
+            if (filteredData.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">🔍</div>
+                        <h3>No Results Found</h3>
+                        <p>Try adjusting your search or filters</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const displayData = filteredData.slice(0, 500);
+
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ticket #</th>
+                            <th>Status</th>
+                            <th>Buyer Name</th>
+                            <th>Phone</th>
+                            <th>Zone</th>
+                            <th>Sold By</th>
+                            <th>Payment</th>
+                            <th>Book</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            displayData.forEach((ticket, index) => {
+                const realIndex = ticketData.indexOf(ticket);
+                const statusClass = ticket.Status.toLowerCase();
+                html += `
+                    <tr>
+                        <td><strong>${ticket.Ticket_Number}</strong></td>
+                        <td><span class="status ${statusClass}">${ticket.Status}</span></td>
+                        <td>${ticket.Buyer_Name || '-'}</td>
+                        <td>${ticket.Buyer_Phone || '-'}</td>
+                        <td>${ticket.Buyer_Zone || '-'}</td>
+                        <td>${ticket.Sold_By || '-'}</td>
+                        <td>${ticket.Payment_Status || '-'}</td>
+                        <td>${ticket.Book_Number}</td>
+                        <td><button class="action-btn edit" onclick="editTicket(${realIndex})">✏️ Edit</button></td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+
+            if (filteredData.length > 500) {
+                html += `<div style="padding: 15px; text-align: center; color: var(--text-muted); font-size: 13px;">
+                    Showing first 500 results. Use search to find specific tickets.
+                </div>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // ============ EDIT TICKET ============
+        function editTicket(index) {
+            const ticket = ticketData[index];
+            document.getElementById('editIndex').value = index;
+            document.getElementById('editRowNum').value = ticket._rowNum || '';
+            document.getElementById('editTicketNum').value = ticket.Ticket_Number;
+            document.getElementById('editStatus').value = ticket.Status;
+            document.getElementById('editName').value = ticket.Buyer_Name || '';
+            document.getElementById('editPhone').value = ticket.Buyer_Phone || '';
+            document.getElementById('editZone').value = ticket.Buyer_Zone || '';
+            document.getElementById('editSoldBy').value = ticket.Sold_By || '';
+            document.getElementById('editPayment').value = ticket.Payment_Status || '';
+            document.getElementById('editNotes').value = ticket.Notes || '';
+
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        async function saveEdit() {
+            const index = parseInt(document.getElementById('editIndex').value);
+            const rowNum = parseInt(document.getElementById('editRowNum').value);
+            const btn = document.getElementById('saveEditBtn');
+            
+            // Update local data
+            ticketData[index].Status = document.getElementById('editStatus').value;
+            ticketData[index].Buyer_Name = document.getElementById('editName').value;
+            ticketData[index].Buyer_Phone = document.getElementById('editPhone').value;
+            ticketData[index].Buyer_Zone = document.getElementById('editZone').value;
+            ticketData[index].Sold_By = document.getElementById('editSoldBy').value;
+            ticketData[index].Payment_Status = document.getElementById('editPayment').value;
+            ticketData[index].Notes = document.getElementById('editNotes').value;
+
+            if (ticketData[index].Status === 'Sold' && !ticketData[index].Payment_Date) {
+                ticketData[index].Payment_Date = new Date().toISOString().split('T')[0];
+            }
+
+            // If connected to Google Sheets, update there too
+            if (connectionVerified && rowNum) {
+                btn.disabled = true;
+                btn.innerHTML = '⏳ Saving...';
+                
+                try {
+                    const values = [
+                        ticketData[index].Ticket_Number,
+                        ticketData[index].Status,
+                        ticketData[index].Sale_Type || '',
+                        ticketData[index].Buyer_Name,
+                        ticketData[index].Buyer_Phone,
+                        ticketData[index].Buyer_Zone,
+                        ticketData[index].Sold_By,
+                        ticketData[index].Payment_Status,
+                        ticketData[index].Payment_Date || '',
+                        ticketData[index].Book_Number,
+                        ticketData[index].Donated_To_Education || '',
+                        ticketData[index].Notes
+                    ];
+
+                    const url = `${syncConfig.appsScriptUrl}?action=update&token=${encodeURIComponent(syncConfig.secretToken)}&row=${rowNum}&values=${encodeURIComponent(JSON.stringify(values))}`;
+                    
+                    const response = await fetch(url);
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showToast('Saved to Google Sheets!', 'success');
+                    } else {
+                        showToast('Local saved, but Sheet update failed: ' + result.error, 'warning');
+                    }
+                } catch (error) {
+                    console.error('Error updating sheet:', error);
+                    showToast('Local saved, but Sheet update failed', 'warning');
+                }
+                
+                btn.disabled = false;
+                btn.innerHTML = '💾 Save Changes';
+            } else {
+                showToast('Changes saved locally', 'success');
+            }
+
+            closeModal();
+            updateStats();
+            filterData();
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        // ============ EXPORT CSV ============
+        function exportCSV() {
+            let csv = headers.join(',') + '\n';
+            
+            ticketData.forEach(ticket => {
+                const row = headers.map(h => {
+                    const val = ticket[h] || '';
+                    return val.includes(',') ? `"${val}"` : val;
+                }).join(',');
+                csv += row + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ceam_raffle_tickets_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            
+            showToast('CSV exported successfully!', 'success');
+        }
+
+        // ============ GOOGLE SHEETS CONNECTION ============
+        function showConnectModal() {
+            document.getElementById('connectModal').classList.add('active');
+            
+            // Load saved config
+            const savedUrl = localStorage.getItem('ceam_apps_script_url');
+            const savedToken = localStorage.getItem('ceam_secret_token');
+            
+            if (savedUrl) document.getElementById('appsScriptUrl').value = savedUrl;
+            if (savedToken) document.getElementById('secretToken').value = savedToken;
+        }
+
+        function closeConnectModal() {
+            document.getElementById('connectModal').classList.remove('active');
+        }
+
+        function toggleTokenVisibility() {
+            const input = document.getElementById('secretToken');
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        async function testConnection() {
+            const url = document.getElementById('appsScriptUrl').value.trim();
+            const token = document.getElementById('secretToken').value.trim();
+            const statusDiv = document.getElementById('connectionStatus');
+            const connectBtn = document.getElementById('connectBtn');
+            
+            if (!url || !token) {
+                statusDiv.style.display = 'block';
+                statusDiv.style.background = '#fef2f2';
+                statusDiv.innerHTML = '❌ Please enter both URL and token';
+                return;
+            }
+
+            statusDiv.style.display = 'block';
+            statusDiv.style.background = '#eff6ff';
+            statusDiv.innerHTML = '⏳ Testing connection...';
+
+            try {
+                const testUrl = `${url}?action=ping&token=${encodeURIComponent(token)}`;
+                const response = await fetch(testUrl);
+                const result = await response.json();
+
+                if (result.success) {
+                    statusDiv.style.background = '#f0fdf4';
+                    statusDiv.innerHTML = '✅ Connection successful! Click "Connect & Sync" to load data.';
+                    connectBtn.disabled = false;
+                    connectionVerified = true;
+                } else {
+                    statusDiv.style.background = '#fef2f2';
+                    statusDiv.innerHTML = `❌ Connection failed: ${result.error}`;
+                    connectBtn.disabled = true;
+                }
+            } catch (error) {
+                statusDiv.style.background = '#fef2f2';
+                statusDiv.innerHTML = `❌ Connection error: ${error.message}`;
+                connectBtn.disabled = true;
+            }
+        }
+
+        async function connectToSheet() {
+            const url = document.getElementById('appsScriptUrl').value.trim();
+            const token = document.getElementById('secretToken').value.trim();
+            
+            // Save config
+            syncConfig.appsScriptUrl = url;
+            syncConfig.secretToken = token;
+            localStorage.setItem('ceam_apps_script_url', url);
+            localStorage.setItem('ceam_secret_token', token);
+
+            // Load data from sheet
+            await loadFromSheet();
+            
+            // Start auto-sync
+            startAutoSync();
+            
+            closeConnectModal();
+            showToast('Connected to Google Sheets!', 'success');
+        }
+
+        async function loadFromSheet() {
+            if (!syncConfig.appsScriptUrl || !syncConfig.secretToken) return;
+
+            updateSyncStatus('syncing', '🔄 Syncing...');
+
+            try {
+                const url = `${syncConfig.appsScriptUrl}?action=read&token=${encodeURIComponent(syncConfig.secretToken)}`;
+                const response = await fetch(url);
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    ticketData = result.data;
+                    initializeUI();
+                    syncConfig.lastSync = new Date();
+                    updateSyncStatus('connected', '✅ Connected (Two-Way Sync)');
+                    document.getElementById('lastSyncTime').textContent = 
+                        'Last sync: ' + syncConfig.lastSync.toLocaleTimeString();
+                } else {
+                    throw new Error(result.error || 'Failed to load data');
+                }
+            } catch (error) {
+                console.error('Sync error:', error);
+                updateSyncStatus('error', '❌ Sync failed');
+                showToast('Sync failed: ' + error.message, 'error');
+            }
+        }
+
+        function startAutoSync() {
+            document.getElementById('syncStatusBar').style.display = 'flex';
+            document.getElementById('autoSyncBtn').textContent = '⏸️ Pause';
+            syncConfig.autoSync = true;
+
+            if (syncIntervalId) clearInterval(syncIntervalId);
+
+            syncIntervalId = setInterval(() => {
+                if (syncConfig.autoSync) {
+                    loadFromSheet();
+                }
+            }, syncConfig.syncInterval);
+        }
+
+        function toggleAutoSync() {
+            syncConfig.autoSync = !syncConfig.autoSync;
+            const btn = document.getElementById('autoSyncBtn');
+            
+            if (syncConfig.autoSync) {
+                btn.textContent = '⏸️ Pause';
+                updateSyncStatus('connected', '✅ Connected (Two-Way Sync)');
+            } else {
+                btn.textContent = '▶️ Resume';
+                updateSyncStatus('paused', '⏸️ Auto-sync paused');
+            }
+        }
+
+        function manualSync() {
+            if (syncConfig.appsScriptUrl && syncConfig.secretToken) {
+                loadFromSheet();
+            } else {
+                showConnectModal();
+            }
+        }
+
+        function disconnectSheet() {
+            if (confirm('Disconnect from Google Sheets?\n\nYour local data will be kept.')) {
+                if (syncIntervalId) clearInterval(syncIntervalId);
+                syncIntervalId = null;
+                connectionVerified = false;
+                syncConfig.appsScriptUrl = null;
+                syncConfig.secretToken = null;
+                
+                document.getElementById('syncStatusBar').style.display = 'none';
+                localStorage.removeItem('ceam_apps_script_url');
+                localStorage.removeItem('ceam_secret_token');
+                
+                showToast('Disconnected from Google Sheets', 'info');
+            }
+        }
+
+        function updateSyncStatus(status, text) {
+            const bar = document.getElementById('syncStatusBar');
+            const icon = document.getElementById('syncIcon');
+            const textEl = document.getElementById('syncText');
+            
+            bar.className = 'sync-status-bar';
+            icon.className = 'sync-icon';
+            
+            switch (status) {
+                case 'syncing':
+                    bar.classList.add('syncing');
+                    icon.classList.add('spinning');
+                    icon.textContent = '🔄';
+                    break;
+                case 'connected':
+                    bar.classList.add('write-enabled');
+                    icon.textContent = '✅';
+                    break;
+                case 'paused':
+                    bar.classList.add('paused');
+                    icon.textContent = '⏸️';
+                    break;
+                case 'error':
+                    bar.classList.add('error');
+                    icon.textContent = '❌';
+                    break;
+            }
+            
+            textEl.textContent = text;
+        }
+
+        // ============ EVENT LISTENERS ============
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.getElementById('connectModal').addEventListener('click', function(e) {
+            if (e.target === this) closeConnectModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeConnectModal();
+            }
+        });
+
+        // ============ INITIALIZATION ============
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize login form (setup vs login)
+            initLoginForm();
+            
+            // Check for saved login session first
+            const hasSession = checkSavedSession();
+            
+            // Check for saved Google Sheets connection
+            const savedUrl = localStorage.getItem('ceam_apps_script_url');
+            const savedToken = localStorage.getItem('ceam_secret_token');
+            
+            if (savedUrl && savedToken) {
+                syncConfig.appsScriptUrl = savedUrl;
+                syncConfig.secretToken = savedToken;
+                connectionVerified = true;
+                
+                // Auto-reconnect only if logged in
+                if (hasSession || isLoggedIn) {
+                    setTimeout(() => {
+                        loadFromSheet();
+                        startAutoSync();
+                    }, 500);
+                }
+            }
+        });
+
+        // Add shake animation for login error feedback
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
